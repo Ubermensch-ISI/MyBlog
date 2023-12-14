@@ -1,0 +1,24 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "NonCoder"
+  navbar:
+    background: dark
+    left:
+      - href: index.qmd
+        text: Home
+      - href: blogs.qmd
+        text: Blog
+      
+format:
+  html:
+    theme: darkly
+    css: styles.css
+  
+
+editor: visual
+
+
+
