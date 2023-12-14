@@ -17,7 +17,7 @@ about:
 format: html
 ---
 
-**Hello.This is Soumyajit Roy,an Neural Network enthusiasts and machine learning and deep learning tools explorar..Welcome to my website.Here I will be sharing about my recent and interesting works.**
+**Hello.This is Soumyajit Roy,an Neural Network enthusiasts and machine learning and deep learning tools explorar.Welcome to my website.Here I will be sharing about my recent and interesting works.**
 
 ## Education
 
