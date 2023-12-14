@@ -46,5 +46,5 @@ format: html
 
   - <b>Worked on</b>:
   Supernova Type-Ia Data Analysis,Outlier Detection,Model fitting ,Data   Extraction Process
-2. Deep Learning and Text Recognistion
+2.Deep Learning and Text Recognistion
   - <b>Under</b>:Prof. Deepayan Sarkar,Indian Statistical Institute
