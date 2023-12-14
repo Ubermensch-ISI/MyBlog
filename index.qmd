@@ -1,5 +1,50 @@
 ---
 title: "NonCoder"
+about: 
+  template: jolla
+  image: web.jpg
+  image-shape: round
+  links: 
+    - icon: linkedin
+      text: linkedin
+      href: https://www.linkedin.com/in/soumyajit-roy-8ab041213?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app
+    - icon: github
+      text: github
+      href: https://github.com/theking25356 
+    - icon: facebook
+      text: facebook  
+      href: https://www.facebook.com/soumyaji.roy/
+format: html
 ---
 
-Hello.This is Soumyajit Roy.Welcome to my website.
+**Hello.This is Soumyajit Roy,an Neural Network enthusiasts and machine learning and deep learning tools explorar..Welcome to my website.Here I will be sharing about my recent and interesting works.**
+
+## Education
+
++------------------------------+----------------------+----------------------+
+| Institute                    | Degree               | Duration             |
++==============================+======================+======================+
+| Presidency University,       | B.sc in Statistics   | Oct 2020 - July 2023 |
+|                              |                      |                      |
+| Kolkata                      |                      |                      |
++------------------------------+----------------------+----------------------+
+| Indian Statistical Institute | M.Stat in Statistics | Jul 2023 - now       |
++------------------------------+----------------------+----------------------+
+
+## Skills
+
+`R` `Python` `Latex` `Regression` `Machine Learning` `Deep Learning` `Keras`
+
+`Tensorflow` `Quarto` `Non-Parametric Regression` `Outlier Detection`
+
+`Logistic Regression` `Decision Tree`
+
+## Projects
+
+1.Cosmological Data Analysis
+  - <b>Under</b>:Prof. Supratik Pal,Indian Statistical Institute
+
+  -  <b>Worked on</b>:
+  Supernova Type-Ia Data Analysis,Outlier Detection,Model fitting ,Data   Extraction Process
+2.Deep Learning and Text Recognistion
+  -<b>Under</b>:Prof. Deepayan Sarkar,Indian Statistical Institute

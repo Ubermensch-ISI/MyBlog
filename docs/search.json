@@ -7,11 +7,39 @@
     "text": "About this site\n\n1 + 1\n\n[1] 2"
   },
   {
+    "objectID": "blogs.html",
+    "href": "blogs.html",
+    "title": "Welcome to my blog.",
+    "section": "",
+    "text": "Welcome to my blog.\n Here is my blogs \n1.Pascal Pyramid in Python"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "NonCoder",
     "section": "",
-    "text": "Hello.This is Soumyajit Roy.Welcome to my website."
+    "text": "Hello.This is Soumyajit Roy,an Neural Network enthusiasts and machine learning and deep learning tools explorar..Welcome to my website.Here I will be sharing about my recent and interesting works."
+  },
+  {
+    "objectID": "index.html#education",
+    "href": "index.html#education",
+    "title": "NonCoder",
+    "section": "Education",
+    "text": "Education\n\n\n\n\n\n\n\n\nInstitute\nDegree\nDuration\n\n\n\n\nPresidency University,\nKolkata\nB.sc in Statistics\nOct 2020 - July 2023\n\n\nIndian Statistical Institute\nM.Stat in Statistics\nJul 2023 - now"
+  },
+  {
+    "objectID": "index.html#skills",
+    "href": "index.html#skills",
+    "title": "NonCoder",
+    "section": "Skills",
+    "text": "Skills\nR Python Latex Regression Machine Learning Deep Learning Keras\nTensorflow Quarto Non-Parametric Regression Outlier Detection\nLogistic Regression Decision Tree"
+  },
+  {
+    "objectID": "index.html#projects",
+    "href": "index.html#projects",
+    "title": "NonCoder",
+    "section": "Projects",
+    "text": "Projects\n1.Cosmological Data Analysis - Under:Prof. Supratik Pal,Indian Statistical Institute\n\nWorked on: Supernova Type-Ia Data Analysis,Outlier Detection,Model fitting ,Data Extraction Process\n\n\nDeep Learning and Text Recognistion\n\n\nUnder:Prof. Deepayan Sarkar,Indian Statistical Institute"
   },
   {
     "objectID": "Pyramid.html",

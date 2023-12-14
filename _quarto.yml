@@ -5,17 +5,20 @@ project:
 website:
   title: "NonCoder"
   navbar:
+    background: dark
     left:
       - href: index.qmd
         text: Home
-      - href: Pyramid.qmd
-        text: Blogs
-
+      - href: blogs.qmd
+        text: Blog
+      
 format:
   html:
-    theme: cosmo
+    theme: darkly
     css: styles.css
-    toc: true
+  
 
 editor: visual
+
+
 

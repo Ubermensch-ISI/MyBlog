@@ -1,0 +1,13 @@
+---
+title: " "
+format: html
+editor: visual
+---
+
+# Welcome to my blog.
+
+<FONT COLOR="red">
+Here is my blogs
+</font>
+
+1.[Pascal Pyramid in Python](Pyramid.qmd)
