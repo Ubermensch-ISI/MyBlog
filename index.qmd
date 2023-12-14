@@ -42,9 +42,9 @@ format: html
 ## Projects
 
 1.Cosmological Data Analysis
-  - <b>Under</b>:Prof. Supratik Pal,Indian Statistical Institute
+  -<b>Under</b>:Prof. Supratik Pal,Indian Statistical Institute
 
-  -  <b>Worked on</b>:
+  -<b>Worked on</b>:
   Supernova Type-Ia Data Analysis,Outlier Detection,Model fitting ,Data   Extraction Process
 2.Deep Learning and Text Recognistion
   -<b>Under</b>:Prof. Deepayan Sarkar,Indian Statistical Institute
