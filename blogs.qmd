@@ -11,4 +11,4 @@ Here is my blogs
 </font>
 
 1.[Pascal Pyramid in Python](Pyramid.qmd)
-2. [Stochastic Modelling of Bank Nifty Data](Stochastic modelling.qmd)
+2.[Stochastic Modelling of Bank Nifty Data](Stochastic modelling.qmd)
