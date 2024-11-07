@@ -1,0 +1,294 @@
+---
+title: "Stochastic Modelling of Stock Price Data "
+author: "Soumyajit Roy"
+format: html
+editor: visual
+echo: false
+---
+
+## Introduction
+
+Stock Price Modelling is a very well celebrated as well as challenging job for the people in industry as well as in academics. There are several approaches. In this paper we will implement stochastic modelling based on mainly a dataset of `Bank NIFTY` starting from 1st Jan,2020 and in each interval of 1 min. We have 5000 observations there. For the entire study, we will try to model `Open Price` throughout.
+
+## Data
+
+Lets take a look over the data,
+
+```{r}
+data=read.csv("E:\\pdf\\Quant Fin\\BankniftyFut.csv",nrows = 5000)
+data$DATE=as.Date(data$DATE,"%d-%m-%Y")
+data$TIME=as.POSIXct(data$TIME,format="%H:%M:%S")
+str(data)
+```
+
+The scatter plot of the data ,
+
+```{r}
+
+plot(data$OPEN,main="Price of Bank Nifty",xlab="time",
+     ylab="price",type = "l")
+```
+
+## Modelling
+
+### **Geometric Brownian Motion:**
+
+The SDE is,
+
+$dS_t=\mu S_tdt+\sigma S_tdW_t$ , where $W_t ~$ \~Weiner Process.
+
+#### **Diagnostic**:
+
+  Now our stock data to fit the GBM, we must have $logS_t-logS_{t-1}$ follows normal distribution. We will diagnos it graphically using Histogram.
+
+```{r}
+        ratio=rep(0,times=dim(data)[1])
+        ratio[1]=data$OPEN[1]
+        for (i in 2:dim(data)[1]){
+          ratio[i]=data$OPEN[i]/data$OPEN[1]
+        }
+        data$ratio=ratio
+        log=diff(log(data$ratio),lag=1)
+
+        hist(log,main = "Histogram of Log difference")
+
+```
+From Histogram it is evident that the data is not coming from a Normal population . Still we fit a GBM to see how it work.
+
+#### **Model fitting:**
+
+##### **Method of Moment estimates:**
+
+Here we estimated the parametres of GBM using MOM estimates. We found,
+
+| Parametre             | Value     |
+|-----------------------|-----------|
+| $$                    
+     \mu                
+     $$                 | -0.00208  |
+| $$                    
+     \sigma             
+     $$                 | 0.1468849 |
+
+: Parametre
+
+##### **Fit:**
+
+```{r}
+ratio=rep(0,times=dim(data)[1])
+ratio[1]=data$OPEN[1]
+ratio[1]=data$OPEN[1]
+for (i in 2:dim(data)[1]){
+  ratio[i]=data$OPEN[i]/data$OPEN[1]
+}
+data$ratio=ratio
+log=diff(log(data$ratio),lag=1)
+mu_mom=mean(log)
+sigma_mom=sd(log)
+
+
+dt=1/dim(data)[1]
+predict_m=function(n=10,mu,sigma){
+res=NULL
+for (j in 1:n){
+predi_mom=rep(0,times=dim(data)[1])
+predi_mom[1]=data$OPEN[1]
+for(i in 2:dim(data)[1]){
+a=predi_mom[i-1]*(mu*dt+sigma*sqrt(dt)*rnorm(1))
+predi_mom[i]=predi_mom[i-1]+a
+}
+res=cbind(res,predi_mom)
+}
+return(res)
+}
+
+matplot(predict_m(5,mu=mu_mom,sigma =sigma_mom),type="l",main="5 Simulated paths of GBM and the original data",ylab="price")
+lines(data$OPEN,col="red",type="l",lwd=2)
+legend("topleft",legend = c("Original","Simulated"),lwd=c(2,1))
+
+```
+
+##### **Goodness of fit test:**
+
+Here we are calculating the Chi- Square statistic based on a simulated path.
+
+```{r}
+chi=sum((predict_m(1,mu=mu_mom,sigma =sigma_mom)-data$OPEN)**2/data$OPEN)
+
+df <- length(data$OPEN) - 1
+p_value <- 1 - pchisq(chi, df)
+cat("P-Value: ",p_value)
+```
+
+Here the p-value for the test is coming as 0. That means the data is not fitting well in this case.
+
+##### **Maximum Likelihood Estimates:**
+
+Similarly as above but using MLE estimates of the GBM we fit it with our data. The estimates are,
+
+| Value                       | Parametre |
+|-----------------------------|-----------|
+| $$                          
+        \mu                   
+        $$                    | -0.00208  |
+| $$                          
+        \sigma                
+        $$                    | 0.14687   |
+
+: Parametre
+
+##### **Fit:**
+
+```{r}
+mu_mle=-0.002083886
+sigma_mle=0.14687
+matplot(predict_m(5,mu=mu_mle,sigma =sigma_mle),type="l",main="5 Simulated paths of GBM and the original data",ylab="price")
+lines(data$OPEN,col="red",type="l",lwd=2)
+legend("topright",legend = c("Original","Simulated"),lwd=c(2,1))
+```
+#### Comaparison between two methods of estimation
+MOM and MLE is performing almost equally in this data. The chi square test statistic for MOM is 1091429 whereas the value for the MLE is 1429156. So we may conclude that MOM estimate is relatively better working then MLE estimate.
+
+##### **Goodness of fit** **:**
+
+Similarly as above,
+
+```{r}
+                                              
+chi=sum((predict_m(1,mu=mu_mom,sigma =sigma_mom)-data$OPEN)**2/data$OPEN)
+                      
+df <- length(data$OPEN) - 1
+p_value <- 1 - pchisq(chi, df)
+cat("P-Value: ",p_value)
+
+```
+
+The p-value is coming to be zero. Hence the fit is not good which is also evident from the plot itself.
+
+### **Jump Diffusion Model:**
+
+From the plot of the data , we can see that there is several jumps in the data. So for modelling this kind of data, Jump Diffusion Model is very famous in literature.
+
+Here the SDE is,
+
+$$
+dS_t=\mu S_tdt+\sigma S_tdW_t+JS_tdN_t $$, where $N_t$\~ Poisson process with parametre $\lambda$ and $J$ represents the jump size. Here we are modelling that, $J$ follows logNormal($\mu_J,\sigma_j$)
+
+###### **Fit:**
+
+The fitting process involves three steps,
+
+1.  Fix a threshold, in practice 3- $\sigma$ limits are taken.
+
+2.  Value of the price greater than the threshold are used to estimate the parametres for $J$ and $N_t$ . But we did'nt get reasonable output there. So we fine tune it to work better.
+
+3.  Value of the price lesser than the threshold are used to estimate the other parametres. Here also we took the same approach .
+
+```{r}
+#-------parametre estimation
+dt=1/dim(data)[1]
+threshold <- 3 * sd(log)     # Define threshold
+normal_returns <- log[abs(log) < threshold]
+mu_hat <- mean(normal_returns)
+sigma_hat <- 0.05
+
+
+# Step 2: Estimate lambda, mu_J, and sigma_J for jump component
+jump_returns <- log[abs(log) >= threshold]
+lambda_hat <- 2
+  mu_j_hat <- mean(jump_returns)
+sigma_j_hat <- 2
+
+
+
+#---------model fitting
+
+jump=function(n=10){
+res=NULL
+for(i in 1:n){
+S <- numeric(length(data$OPEN))
+S[1] <- data$OPEN[1]
+
+# Simulate the process
+for (t in 2:length(S)) {
+  # GBM component
+  dWt <- rnorm(1, mean = 0, sd = sqrt(dt))
+  dS_gbm <- (mu_hat * dt + sigma_hat * dWt) * S[t-1]
+  
+  # Jump component
+  Nt <- rpois(1, lambda_hat * dt)  # Number of jumps at this step
+  if (Nt > 0) {
+    J <- rnorm(1, mean = mu_j_hat, sd = sigma_j_hat)  # Jump size
+    dS_jump <- (exp(J)) * S[t-1]  # Apply jump multiplicatively
+  } else {
+    dS_jump <- 0
+  }
+  
+  # Update stock price
+  S[t] <- S[t-1] + dS_gbm + dS_jump
+}
+res=cbind(res,S)
+}
+return(res)
+}
+
+
+
+set.seed(4000000)
+plot(data$OPEN,type = "l",lwd=2,main="5 Simulated paths of GBM and the original data",ylab="price")
+matplot(jump(5),type = "l",add=TRUE)
+legend("topright",legend = c("Original","Simulated"),lwd=c(2,1))
+
+```
+
+
+#### **Goodness of fit:**
+
+```{r}
+chi=sum((predict_m(1,mu=mu_mom,sigma =sigma_mom)-data$OPEN)**2/data$OPEN)
+                      
+df <- length(data$OPEN) - 1
+p_value <- 1 - pchisq(chi, df)
+cat("P-Value: ",p_value)
+```
+
+Here also the Goodness of fit Chi- Square test is giving p-value zero, hence the null hypothesis that the data is fitting the model is rejected.
+
+## **Clustering:**
+
+As we are guessing that there may be some cluster there ,so we applied K- nearest neighbour method here with k=2. 
+
+```{r}
+a=kmeans(data$OPEN,2)
+plot(data$OPEN,col=a$cluster,main = "Data with clusters using 2-NN",
+     ylab="Price")
+```
+
+The method also supports our claim as there are two cluster there.
+
+## **Comments on fit:**
+
+We saw that both the model fails to give satisfactory fit to our data. Now we will discuss about the two methods seperately.
+
+### **GBM:**
+GBM usually simulate data to be increasing manner. So its highly unlikely for real world data to get fitted well. But if the time interval is very small or the time gap between two observation is fairly large , then it can be assumed that there is not such jumps in that case. So we can assume that in that case GBM may be a good fit to the data. Actually, for stable market GBM works well. Here our log return was far from normality and also we had some jumps in the data, so the GBM approach failed.
+
+### **Jump Diffusion Model :**
+
+In literature , Jump Diffusion Model and its extensions are widely used for modelling the data with jumps. But here we are using the basic model. It is capturing the jump but due to high variability it is not efficient.
+
+### **Clustering:**
+
+We tried KNN clustering also. It was giving us two clusters, one in the first and last with relatively high values and one in the middle with the low values. We may extend it to model this clusters seperately.
+
+## Conclusion
+
+So from the above analysis we get the impression that may be more sophisticated method applied on each cluster fit the data well. Or we can go for another Jump diffusions model to fit it well. But our simulated paths in the Jump diffusion model is pretty close representing our data.
+
+## Acknowledgement
+I would like to express my sincere gratitude to Professor Abhik Ghosh and Sourojyoti Ghosh for their invaluable guidance and support throughout this work. Their insights and expertise in finance and modelling greatly enhanced my understanding and helped shape this assignment. I am also grateful to my friends for their encouragement and unwavering support. 
+
+## Reference
+1. Hull, J. C. (2021). Options, Futures, and Other Derivatives (10th ed.). Pearson.
+2. Merton, R. C. (1976). Option Pricing When Underlying Stock Returns Are Discontinuous. Journal of Financial Economics, 3(1-2), 125-144.
+3. 3 Blue 1 Brown (YouTube Channel)
